@@ -1,2 +1,2 @@
 # coursework
-Course Work on kwic_for_corpora
+Course work on search_kwic Python package
