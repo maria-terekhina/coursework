@@ -3,8 +3,7 @@ from math import fabs
 import urllib.request
 import re
 
-models = {'rus': 'russian-syntagrus-ud-2.0-170801.udpipe',
-          'eng': 'english-ud-2.1-20180111.udpipe',
+models = {'eng': 'english-ud-2.1-20180111.udpipe',
           'ita': 'italian-ud-2.0-170801.udpipe',
           'fra': 'french-sequoia-ud-2.1-20180111.udpipe',
           'ara': 'arabic-ud-2.0-170801.udpipe',
@@ -33,7 +32,25 @@ models = {'rus': 'russian-syntagrus-ud-2.0-170801.udpipe',
           'kor': 'korean-ud-2.0-170801.udpipe',
           'lat': 'latin-ud-2.0-170801.udpipe',
           'lav': 'latvian-ud-2.0-170801.udpipe',
-          'lit': 'lithuanian-ud-2.0-170801.udpipe'}
+          'lit': 'lithuanian-ud-2.0-170801.udpipe',
+          'nor': 'norwegian-bokmaal-ud-2.0-170801.udpipe',
+          'chu': 'old_church_slavonic-ud-2.0-170801.udpipe',
+          'fas': 'persian-ud-2.0-170801.udpipe',
+          'pol': 'polish-ud-2.0-170801.udpipe',
+          'por': 'portuguese-ud-2.0-170801.udpipe',
+          'ron': 'romanian-ud-2.0-170801.udpipe',
+          'rus': 'russian-syntagrus-ud-2.0-170801.udpipe',
+          'san': 'sanskrit-ud-2.0-170801.udpipe',
+          'slk': 'slovak-ud-2.0-170801.udpipe',
+          'slv': 'slovenian-ud-2.0-170801.udpipe',
+          'spa': 'spanish-ud-2.0-170801.udpipe',
+          'swe': 'swedish-lines-ud-2.0-170801.udpipe',
+          'tam': 'tamil-ud-2.0-170801.udpipe',
+          'tur': 'turkish-ud-2.0-170801.udpipe',
+          'ukr': 'ukrainian-ud-2.0-170801.udpipe',
+          'urd': 'urdu-ud-2.0-170801.udpipe',
+          'uig': 'uyghur-ud-2.0-170801.udpipe',
+          'vie': 'vietnamese-ud-2.0-170801.udpipe'}
 
 class Aligner:
     '''
