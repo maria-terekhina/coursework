@@ -1,12 +1,39 @@
 from model import Model
 from math import fabs
 import urllib.request
+import re
 
 models = {'rus': 'russian-syntagrus-ud-2.0-170801.udpipe',
           'eng': 'english-ud-2.1-20180111.udpipe',
           'ita': 'italian-ud-2.0-170801.udpipe',
-          'fra': 'french-sequoia-ud-2.1-20180111.udpipe'}
-
+          'fra': 'french-sequoia-ud-2.1-20180111.udpipe',
+          'ara': 'arabic-ud-2.0-170801.udpipe',
+          'eus': 'basque-ud-2.0-170801.udpipe',
+          'bel': 'belarusian-ud-2.0-170801.udpipe',
+          'bul': 'bulgarian-ud-2.0-170801.udpipe',
+          'cat': 'catalan-ud-2.0-170801.udpipe',
+          'zho': 'chinese-ud-2.0-170801.udpipe',
+          'cop': 'coptic-ud-2.0-170801.udpipe',
+          'hrv': 'croatian-ud-2.0-170801.udpipe',
+          'ces': 'czech-cltt-ud-2.0-170801.udpipe',
+          'dan': 'danish-ud-2.0-170801.udpipe',
+          'nld': 'dutch-ud-2.0-170801.udpipe',
+          'est': 'estonian-ud-2.0-170801.udpipe',
+          'fin': 'finnish-ud-2.0-170801.udpipe',
+          'glg': 'galician-ud-2.0-170801.udpipe',
+          'got': 'gothic-ud-2.0-170801.udpipe',
+          'ell': 'greek-ud-2.0-170801.udpipe',
+          'heb': 'hebrew-ud-2.0-170801.udpipe',
+          'hin': 'hindi-ud-2.0-170801.udpipe',
+          'hun': 'hungarian-ud-2.0-170801.udpipe',
+          'ind': 'indonesian-ud-2.0-170801.udpipe',
+          'gle': 'irish-ud-2.0-170801.udpipe',
+          'jpn': 'japanese-ud-2.0-170801.udpipe',
+          'kaz': 'kazakh-ud-2.0-170801.udpipe',
+          'kor': 'korean-ud-2.0-170801.udpipe',
+          'lat': 'latin-ud-2.0-170801.udpipe',
+          'lav': 'latvian-ud-2.0-170801.udpipe',
+          'lit': 'lithuanian-ud-2.0-170801.udpipe'}
 
 class Aligner:
     '''
@@ -21,16 +48,24 @@ class Aligner:
         try:
             self.model_ql = Model(models[self.ql])
         except:
-            urllib.request.urlretrieve(
-                "https://github.com/bnosac/udpipe.models.ud/raw/master/models/{}".format(models[self.ql]),
-                models[self.ql])
+            if self.ql in models:
+                urllib.request.urlretrieve(
+                    "https://github.com/maria-terekhina/search_kwic/raw/master/udpipe-ud-2.0-170801/{}".format(models[self.ql]),
+                    models[self.ql])
+                self.model_ql = Model(models[self.ql])
+            else:
+                raise ValueError('No model for this language.')
 
         try:
             self.model_tl = Model(models[self.tl])
         except:
-            urllib.request.urlretrieve(
-                "https://github.com/bnosac/udpipe.models.ud/raw/master/models/{}".format(models[self.tl]),
-                models[self.tl])
+            if self.tl in models:
+                urllib.request.urlretrieve(
+                    "https://github.com/maria-terekhina/search_kwic/raw/master/udpipe-ud-2.0-170801/{}".format(models[self.tl]),
+                    models[self.tl])
+                self.model_tl = Model(models[self.tl])
+            else:
+                raise ValueError('No model for this language.')
 
     def align(self, query, sent_q, sent_t):
         '''
@@ -41,21 +76,29 @@ class Aligner:
         :return: list, indexes of the found word
         '''
 
-        info_q = self.process_(self.model_ql.tokenize(sent_q), self.model_ql)
-        info_t = self.process_(self.model_tl.tokenize(sent_t), self.model_tl)
+        # substitute «» quotes with double quotes («» are not processed correctly)
+        sent_q = re.sub('«|»', '"', sent_q)
+        sent_t = re.sub('«|»', '"', sent_t)
 
-        max_i, max_word, query_info = self.find_parallel_(query, info_q, info_t)
-        print(max_word[-1]['word'])
+        # collect metadata of original and parallel sentences
+        info_q = self._process(self.model_ql.tokenize(sent_q), self.model_ql)
+        info_t = self._process(self.model_tl.tokenize(sent_t), self.model_tl)
 
-        if max_i[-1] == max_i[-2]:
-            target = self.decision_maker_(max_i, max_word, query_info)['word']
-        else:
+        # find query metadata and words of parallel sentences with high similarity to query metadata
+        max_i, max_word, query_info = self._find_parallel(query, info_q, info_t)
+
+        # check if it is one word with highest score, if not chose one of them
+        if len(max_i) == 1:
+            return [0, 0]
+        elif max_i[-1] != max_i[-2]:
             target = max_word[-1]['word']
+        else:
+            target = self._decision_maker(max_i, max_word, query_info)['word']
 
         idx = sent_t.find(target)
         return [idx, idx + len(max_word[-1]['word'])]
 
-    def process_(self, sentences, model):
+    def _process(self, sentences, model):
         '''
         Collect metadata of the words.
         :param sentences: list, sentences to collect metadata
@@ -66,9 +109,9 @@ class Aligner:
         for s in sentences:
             model.tag(s)
             model.parse(s)
-        return self.collect_info_(model.write(sentences, "conllu"))
+        return self._collect_info(model.write(sentences, "conllu"))
 
-    def collect_info_(self, meta):
+    def _collect_info(self, meta):
         '''
         Collect metadata of all words in the sentence (POStag, parent, children, dependency tag, position in the
         sentence.
@@ -106,10 +149,9 @@ class Aligner:
             else:
                 words[i]['parent_tag'] = words[words[i]['parent']]['tag']
                 words[words[i]['parent']]['children'].append(words[i]['tag'])
-
         return words
 
-    def find_parallel_(self, query, info_q, info_t):
+    def _find_parallel(self, query, info_q, info_t):
         '''
         Compare query metadata with all words in translation sentence.
         :param query: str, query
@@ -151,9 +193,9 @@ class Aligner:
 
         return max_i, max_word, query_info
 
-    def decision_maker_(self, max_i, max_word, query_info):
+    def _decision_maker(self, max_i, max_word, query_info):
         '''
-        Choose the translation word over several candidates based on absolute position relative to query word.
+        Choose the translation word over several candidates based on position relative to query word.
         :param max_i: list, scores of the words in translation (score is added only if >= previous score in list)
         :param max_word: list, words, which scores are in max_i
         :param query_info: dict, query metadata
@@ -162,16 +204,13 @@ class Aligner:
 
         n = max_i.count(max_i[-1])
         dist = list()
-
         # take last words with the same score and find the nearest to query
         for i in max_word[-n:]:
-            dist.append(fabs(query_info['position'] - max_word[i]['position']))
+            dist.append(fabs(query_info['position'] - i['position']))
 
         return max_word[-n:][dist.index(min(dist))]
 
 
 if __name__ == '__main__':
-    a = Aligner('rus', 'ita')
-    a.align('стол',
-            'Сразу за дверью помещался длинный письменный стол. Здесь трудилась Ракель, выполняя обязанности одновременно распорядителя и секретаря.',
-            "Immediatamente di fronte all'ingresso c'era la lunga scrivania di legno dove Raquel svolgeva allo stesso tempo la funzione di receptionist e di segretaria.")
+    a = Aligner('rus', 'eng')
+    print(a.align('очки', "Как я уже сказал, наши скамьи были рядом, одна за другой.", " "))
