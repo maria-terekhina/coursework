@@ -123,4 +123,4 @@ List of avaliable languages is limited only by avaliable pretrained UD models. T
 
 ## License
 
-The package is destriduted under MIT license, read about it [here](https://github.com/maria-terekhina/search_kwic/blob/master/LICENSE).
+The package is destriduted under the MIT license, read about it [here](https://github.com/maria-terekhina/search_kwic/blob/master/LICENSE).
