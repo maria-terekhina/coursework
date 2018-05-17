@@ -12,7 +12,7 @@ To install serach_kwic type in the terminal:
 
     pip install search_kwic 
 
-`search_kwic` depends only on `ufal.udpipe`, it will be install during the `search_kwic` installation.
+`search_kwic` depends only on `ufal.udpipe`, it will be installed during the `search_kwic` installation.
 
 ## Quickstart
 
