@@ -72,7 +72,7 @@ phrase[idxs[0]:idxs[1]]
 
 - The firs run of the `Aligner` with new language might take quite a time, because of models dowloading. After models downloaded 
 on your PC, the next initializations of `Aligner` will be faster.
-- **`query`** passed to `align()` must be a ***one*** token, not several tokens.
+- **`query`** passed to `align()` must be ***one*** token, not several tokens.
 
 ## Avaliable languages
 
