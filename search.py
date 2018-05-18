@@ -65,23 +65,23 @@ class Aligner:
         try:
             self.model_ql = Model(models[self.ql])
         except:
-            if self.ql in models:
+            try:
                 urllib.request.urlretrieve(
-                    "https://github.com/maria-terekhina/search_kwic/raw/master/udpipe-ud-2.0-170801/{}".format(models[self.ql]),
+                    "https://github.com/maria-terekhina/search_kwic/raw/master/models%20udpipe-ud-2.0-170801/{}".format(models[self.ql]),
                     models[self.ql])
                 self.model_ql = Model(models[self.ql])
-            else:
+            except:
                 raise ValueError('No model for this language.')
 
         try:
             self.model_tl = Model(models[self.tl])
         except:
-            if self.tl in models:
+            try:
                 urllib.request.urlretrieve(
-                    "https://github.com/maria-terekhina/search_kwic/raw/master/udpipe-ud-2.0-170801/{}".format(models[self.tl]),
+                    "https://github.com/maria-terekhina/search_kwic/raw/master/models%20udpipe-ud-2.0-170801/{}".format(models[self.tl]),
                     models[self.tl])
                 self.model_tl = Model(models[self.tl])
-            else:
+            except:
                 raise ValueError('No model for this language.')
 
     def align(self, query, sent_q, sent_t):
@@ -190,6 +190,9 @@ class Aligner:
                 query_info = info_q[word]
                 break
 
+        if len(query_info) == 0:
+            return max_i, max_word, query_info
+
         # compare metadata of words in *info_t* with query metadata
         for word in info_t:
             i = 0
@@ -229,5 +232,5 @@ class Aligner:
 
 
 if __name__ == '__main__':
-    a = Aligner('rus', 'eng')
-    print(a.align('очки', "Как я уже сказал, наши скамьи были рядом, одна за другой.", " "))
+    a = Aligner('eng', 'rus')
+    print(a.align('window', "7.35-7.50 a.m.    Look out of window.     7.55 a.m.",     "7: 35-7: 50.    Смотрю в окно.    7: 55.  "))
