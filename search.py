@@ -3,8 +3,7 @@ from math import fabs
 import urllib.request
 import re
 
-models = {'rus': 'russian-syntagrus-ud-2.0-170801.udpipe',
-          'eng': 'english-ud-2.1-20180111.udpipe',
+models = {'eng': 'english-ud-2.1-20180111.udpipe',
           'ita': 'italian-ud-2.0-170801.udpipe',
           'fra': 'french-sequoia-ud-2.1-20180111.udpipe',
           'ara': 'arabic-ud-2.0-170801.udpipe',
@@ -33,7 +32,25 @@ models = {'rus': 'russian-syntagrus-ud-2.0-170801.udpipe',
           'kor': 'korean-ud-2.0-170801.udpipe',
           'lat': 'latin-ud-2.0-170801.udpipe',
           'lav': 'latvian-ud-2.0-170801.udpipe',
-          'lit': 'lithuanian-ud-2.0-170801.udpipe'}
+          'lit': 'lithuanian-ud-2.0-170801.udpipe',
+          'nor': 'norwegian-bokmaal-ud-2.0-170801.udpipe',
+          'chu': 'old_church_slavonic-ud-2.0-170801.udpipe',
+          'fas': 'persian-ud-2.0-170801.udpipe',
+          'pol': 'polish-ud-2.0-170801.udpipe',
+          'por': 'portuguese-ud-2.0-170801.udpipe',
+          'ron': 'romanian-ud-2.0-170801.udpipe',
+          'rus': 'russian-syntagrus-ud-2.0-170801.udpipe',
+          'san': 'sanskrit-ud-2.0-170801.udpipe',
+          'slk': 'slovak-ud-2.0-170801.udpipe',
+          'slv': 'slovenian-ud-2.0-170801.udpipe',
+          'spa': 'spanish-ud-2.0-170801.udpipe',
+          'swe': 'swedish-lines-ud-2.0-170801.udpipe',
+          'tam': 'tamil-ud-2.0-170801.udpipe',
+          'tur': 'turkish-ud-2.0-170801.udpipe',
+          'ukr': 'ukrainian-ud-2.0-170801.udpipe',
+          'urd': 'urdu-ud-2.0-170801.udpipe',
+          'uig': 'uyghur-ud-2.0-170801.udpipe',
+          'vie': 'vietnamese-ud-2.0-170801.udpipe'}
 
 class Aligner:
     '''
@@ -48,23 +65,23 @@ class Aligner:
         try:
             self.model_ql = Model(models[self.ql])
         except:
-            if self.ql in models:
+            try:
                 urllib.request.urlretrieve(
-                    "https://github.com/maria-terekhina/search_kwic/raw/master/udpipe-ud-2.0-170801/{}".format(models[self.ql]),
+                    "https://github.com/maria-terekhina/search_kwic/raw/master/models%20udpipe-ud-2.0-170801/{}".format(models[self.ql]),
                     models[self.ql])
                 self.model_ql = Model(models[self.ql])
-            else:
+            except:
                 raise ValueError('No model for this language.')
 
         try:
             self.model_tl = Model(models[self.tl])
         except:
-            if self.tl in models:
+            try:
                 urllib.request.urlretrieve(
-                    "https://github.com/maria-terekhina/search_kwic/raw/master/udpipe-ud-2.0-170801/{}".format(models[self.tl]),
+                    "https://github.com/maria-terekhina/search_kwic/raw/master/models%20udpipe-ud-2.0-170801/{}".format(models[self.tl]),
                     models[self.tl])
                 self.model_tl = Model(models[self.tl])
-            else:
+            except:
                 raise ValueError('No model for this language.')
 
     def align(self, query, sent_q, sent_t):
@@ -173,6 +190,9 @@ class Aligner:
                 query_info = info_q[word]
                 break
 
+        if len(query_info) == 0:
+            return max_i, max_word, query_info
+
         # compare metadata of words in *info_t* with query metadata
         for word in info_t:
             i = 0
@@ -212,5 +232,5 @@ class Aligner:
 
 
 if __name__ == '__main__':
-    a = Aligner('rus', 'eng')
-    print(a.align('очки', "Как я уже сказал, наши скамьи были рядом, одна за другой.", " "))
+    a = Aligner('eng', 'rus')
+    print(a.align('window', "7.35-7.50 a.m.    Look out of window.     7.55 a.m.",     "7: 35-7: 50.    Смотрю в окно.    7: 55.  "))
