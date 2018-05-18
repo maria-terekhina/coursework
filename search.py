@@ -245,8 +245,3 @@ class Aligner:
             dist.append(fabs(query_info['position'] - i['position']))
 
         return max_word[-n:][dist.index(min(dist))]
-
-
-if __name__ == '__main__':
-    a = Aligner('eng', 'rus')
-    print(a.align('window', "7.35-7.50 a.m.    Look out of window.     7.55 a.m.",     "7: 35-7: 50.    Смотрю в окно.    7: 55.  "))
