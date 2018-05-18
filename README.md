@@ -8,7 +8,7 @@ search_kwic
 
 ## Installation 
 
-To install serach_kwic type in the terminal:
+To install `serach_kwic` type in the terminal:
 
     pip install search_kwic 
 
