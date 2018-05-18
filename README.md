@@ -58,6 +58,7 @@ phrase[idxs[0]:idxs[1]]
 - **`queryLanguage`**: language of original sentence(s)
 - **`targetLanguage`**: language of parallel sentence(s), where you want to find a corresponding word
 
+#### Main method
 `Aligner` has one method `align`, which takes three positional arguments:
 - **`query`**: word to which you want to find a corresponding one in parallel text
 - **`sent_q`**: original sentence(s) containing query
