@@ -67,6 +67,12 @@ phrase[idxs[0]:idxs[1]]
 
 `align` returns **list** of indexes of the corresponding word found in the parallel text.
 
+## Important
+
+- The firs run of the `Aligner` with new language might take quite a time, because of models dowloading. After models downloaded 
+on your PC, the next initializations of `Aligner` will be faster.
+- **`query`** passed to `align()` must be a ***one*** token, not several tokens.
+
 ## Avaliable languages
 
 List of avaliable languages is limited only by avaliable pretrained UD models. The list of currently avaliable languages is the following (codes are in the [ISO_639-1 format](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)):
@@ -120,6 +126,10 @@ List of avaliable languages is limited only by avaliable pretrained UD models. T
 |urd|urdu|
 |uig|uyghur|
 |vie|vietnamese|
+
+## Reporting a bug & requesting functionality
+
+You can report a bug, ask a question or suggest adding features via [Issues](https://github.com/maria-terekhina/search_kwic/issues) in the repository.
 
 ## License
 
