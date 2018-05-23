@@ -3,8 +3,6 @@ from math import fabs
 import urllib.request
 import re
 
-<<<<<<< HEAD
-=======
 __author__ = 'maria-terekhina'
 __doc__ = \
 """
@@ -19,8 +17,6 @@ Main method: align
 Rerurns: 
           list, indexes of found corresponding word in parallel text (begining index and end index).
 """
-
->>>>>>> 22cf6c344e20ce6c85bea1fda51178ef78f7e03b
 models = {'eng': 'english-ud-2.1-20180111.udpipe',
           'ita': 'italian-ud-2.0-170801.udpipe',
           'fra': 'french-sequoia-ud-2.1-20180111.udpipe',
@@ -251,11 +247,3 @@ class Aligner:
             dist.append(fabs(query_info['position'] - i['position']))
 
         return max_word[-n:][dist.index(min(dist))]
-<<<<<<< HEAD
-
-
-if __name__ == '__main__':
-    a = Aligner('eng', 'rus')
-    print(a.align('window', "7.35-7.50 a.m.    Look out of window.     7.55 a.m.",     "7: 35-7: 50.    Смотрю в окно.    7: 55.  "))
-=======
->>>>>>> 22cf6c344e20ce6c85bea1fda51178ef78f7e03b

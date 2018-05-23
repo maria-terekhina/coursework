@@ -10,4 +10,5 @@ setup(
   download_url = 'https://github.com/maria-terekhina/search_kwic/archive/0.1.tar.gz', # I'll explain this in a second
   keywords = ['kwic', 'parallel', 'corpora', 'alignment'], 
   classifiers = [],
+  install_requires=['ufal.udpipe']
 )
