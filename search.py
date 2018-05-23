@@ -3,6 +3,24 @@ from math import fabs
 import urllib.request
 import re
 
+<<<<<<< HEAD
+=======
+__author__ = 'maria-terekhina'
+__doc__ = \
+"""
+Tool for KWIC representation of paralleltext. Find a word in parallel text corresponding to query in original text.
+
+Arguments:
+          queryLanguage: str, language of the original text in ISO 639 format.
+          targetLanguage: str, language of the parallel text in ISO 639 format.
+          
+Main method: align
+
+Rerurns: 
+          list, indexes of found corresponding word in parallel text (begining index and end index).
+"""
+
+>>>>>>> 22cf6c344e20ce6c85bea1fda51178ef78f7e03b
 models = {'eng': 'english-ud-2.1-20180111.udpipe',
           'ita': 'italian-ud-2.0-170801.udpipe',
           'fra': 'french-sequoia-ud-2.1-20180111.udpipe',
@@ -189,6 +207,10 @@ class Aligner:
             if info_q[word]['word'] == query:
                 query_info = info_q[word]
                 break
+                    
+        # check if query is found
+        if len(query_info) == 0:
+            return max_i, max_word, query_info
 
         if len(query_info) == 0:
             return max_i, max_word, query_info
@@ -229,8 +251,11 @@ class Aligner:
             dist.append(fabs(query_info['position'] - i['position']))
 
         return max_word[-n:][dist.index(min(dist))]
+<<<<<<< HEAD
 
 
 if __name__ == '__main__':
     a = Aligner('eng', 'rus')
     print(a.align('window', "7.35-7.50 a.m.    Look out of window.     7.55 a.m.",     "7: 35-7: 50.    Смотрю в окно.    7: 55.  "))
+=======
+>>>>>>> 22cf6c344e20ce6c85bea1fda51178ef78f7e03b
