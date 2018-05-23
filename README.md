@@ -20,7 +20,7 @@ To find a token in parallel text, which corresponds to the query in the original
 
 
 ```python
-from search import Aligner
+from search_kwic.search import Aligner
 
 aligner = Aligner(queryLanguage='rus', targetLanguage='eng')
 idxs = aligner.align(query='очки', sent_q='На шее висели очки на цепочке в роговой оправе и с толстыми стеклами.',
