@@ -1,0 +1,10 @@
+setup.cfg
+setup.py
+search_kwic/__init__.py
+search_kwic/model.py
+search_kwic/search.py
+search_kwic.egg-info/PKG-INFO
+search_kwic.egg-info/SOURCES.txt
+search_kwic.egg-info/dependency_links.txt
+search_kwic.egg-info/requires.txt
+search_kwic.egg-info/top_level.txt
