@@ -1,4 +1,4 @@
-from model import Model
+from .model import Model
 from math import fabs
 import urllib.request
 import re

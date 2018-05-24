@@ -1,7 +1,7 @@
 Metadata-Version: 1.1
 Name: search-kwic
-Version: 0.3
-Summary: Tool for KWIC representation of paralleltext. Find a word in parallel text corresponding to query in original text.
+Version: 0.2
+Summary: Tool for KWIC representation of paralleltext. Find a word in the parallel text corresponding to query in the original text.
 Home-page: https://github.com/maria-terekhina/search_kwic
 Author: Maria Terekhina
 Author-email: maria.myslina@gmail.com

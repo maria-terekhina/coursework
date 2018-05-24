@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
   name = 'search_kwic',
   packages = ['search_kwic'],
-  version = '0.1',
+  version = '0.2',
   description = 'Tool for KWIC representation of paralleltext. Find a word in the parallel text corresponding to query in the original text.',
   author = 'Maria Terekhina',
   author_email = 'maria.myslina@gmail.com',
